@@ -9,7 +9,7 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // Để kết nối Google Apps Script/API thật, thay chuỗi rỗng bên dưới bằng endpoint.
-  const FORM_ENDPOINT = '';
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzzQaEvq5aBP9TEaUfFjqpWn8txNpqS_xZ8LyssUR_2_H0GZFR0isUYRtyihTpFHXSZCw/exec';
   const form = document.getElementById('lead-form');
   const status = document.getElementById('form-status');
   const setStatus = (message, type) => { status.textContent = message; status.className = `form-status show ${type}`; };
@@ -24,8 +24,10 @@
     submit.disabled = true; submit.textContent = 'Đang gửi thông tin…'; setStatus('Đang chuẩn bị yêu cầu tư vấn của bạn…', 'info');
     try {
       if (!FORM_ENDPOINT) { await new Promise(resolve => setTimeout(resolve, 650)); setStatus('Form đang ở chế độ demo nên thông tin chưa được gửi lên máy chủ. Vui lòng gọi 0922 396 033 hoặc cấu hình endpoint trong assets/js/main.js.', 'info'); return; }
-      const response = await fetch(FORM_ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(Object.fromEntries(new FormData(form))) });
+      const response = await fetch(FORM_ENDPOINT, { method:'POST', redirect:'follow', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(Object.fromEntries(new FormData(form))) });
       if (!response.ok) throw new Error('Request failed');
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.message || 'Save failed');
       setStatus('Cảm ơn bạn! FACESEO đã nhận thông tin và sẽ liên hệ sớm.', 'success'); form.reset();
     } catch { setStatus('Chưa thể gửi thông tin. Vui lòng thử lại hoặc gọi 0922 396 033.', 'fail'); }
     finally { submit.disabled = false; submit.textContent = 'Gửi yêu cầu tư vấn'; }

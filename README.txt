@@ -29,9 +29,17 @@ FACESEO – LANDING PAGE ĐÀO TẠO SEO
 - Hosting thường: tải index.html và thư mục assets vào thư mục public_html.
 
 7. CÁCH KẾT NỐI FORM VỚI GOOGLE SHEETS/API
-- Mở assets/js/main.js.
-- Tìm: const FORM_ENDPOINT = '';
-- Dán URL Web App của Google Apps Script hoặc API thật vào giữa hai dấu nháy.
+- Tạo hoặc mở Google Sheet muốn nhận đăng ký.
+- Chọn Tiện ích mở rộng > Apps Script.
+- Xóa mã mẫu và dán toàn bộ nội dung file GOOGLE-APPS-SCRIPT.gs.
+- Nhấn Lưu, sau đó chọn Triển khai > Lần triển khai mới > Ứng dụng web.
+- Mục "Thực thi dưới dạng" chọn "Tôi".
+- Mục "Ai có quyền truy cập" chọn "Bất kỳ ai".
+- Nhấn Triển khai, cấp quyền và sao chép URL kết thúc bằng /exec.
+- Mở assets/js/main.js, tìm: const FORM_ENDPOINT = '';
+- Dán URL vào giữa hai dấu nháy, ví dụ: const FORM_ENDPOINT = 'https://script.google.com/macros/s/XXXXX/exec';
+- Không dùng URL kết thúc bằng /dev và không dùng URL trên thanh địa chỉ của Google Sheet.
+- Sheet "Đăng ký" cùng hàng tiêu đề sẽ tự được tạo khi có lượt gửi đầu tiên.
 - Khi chưa có endpoint, form chủ động báo chế độ demo và không giả vờ rằng dữ liệu đã được lưu.
 
 8. LƯU Ý TRƯỚC KHI XUẤT BẢN
